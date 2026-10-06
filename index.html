@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Watchlist</title>
+
+  <style>
+    
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f2f2f2;
+      color: #222;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      padding: 14px 16px;
+      background: #3157a4;
+      color: white;
+    }
+
+    .navbar-content {
+      display: flex;
+      max-width: 1000px;
+      margin: 0 auto;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .navbar-brand {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .navbar-links {
+      display: flex;
+      gap: 18px;
+    }
+
+    .navbar-links a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    main.container {
+      padding: 24px 16px;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 24px;
+    }
+
+    form, .movie {
+      margin-bottom: 16px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+    }
+
+    form h2 {
+      margin: 0 0 20px;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+    }
+
+    input, select {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 10px;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      min-height: 42px;
+      margin-top: 14px;
+      padding: 10px;
+      border: 0;
+      border-radius: 4px;
+      background: #3157a4;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #24427e;
+    }
+
+    #movie-list > p {
+      text-align: center;
+      color: #666;
+    }
+
+    .movie h3 {
+      margin: 0 0 10px;
+      overflow-wrap: anywhere;
+    }
+
+    .movie p {
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .movie-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .movie-buttons button {
+      flex: 1;
+      margin-top: 14px;
+    }
+
+    .delete-button {
+      background: #b33a3a;
+    }
+
+    .delete-button:hover {
+      background: #8e2929;
+    }
+
+    #cancel-button {
+      background: #666;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .summary div {
+      padding: 14px;
+      border-radius: 6px;
+      background: white;
+      text-align: center;
+    }
+
+    .summary strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 22px;
+    }
+
+    .movie-tools {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .movie-tools input,
+    .movie-tools select {
+      margin: 0;
+      background: white;
+    }
+
+    @media (max-width: 500px) {
+      .navbar-content {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .navbar-links {
+        gap: 14px;
+      }
+
+      form, .movie {
+        padding: 16px;
+      }
+
+      .summary {
+        gap: 6px;
+      }
+
+      .summary div {
+        padding: 10px 4px;
+        font-size: 13px;
+      }
+
+      .summary strong {
+        font-size: 18px;
+      }
+
+      .movie-tools {
+        flex-direction: column;
+      }
+
+      .movie-buttons {
+        gap: 6px;
+      }
+
+      .movie-buttons button {
+        padding: 8px 4px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="navbar-content">
+      <a class="navbar-brand" href="#">Movie Watchlist</a>
+      <div class="navbar-links">
+        <a href="#">Home</a>
+        <a href="#movie-form">Add Movie</a>
+        <a href="#movie-list-section">My Movies</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h1 id="home">Movie Watchlist</h1>
+
+    <form id="movie-form">
+      <h2 id="form-title">Add a Movie</h2>
+
+      <label for="movie-name">Movie Name</label>
+      <input id="movie-name" type="text" required>
+
+      <label for="movie-genre">Genre</label>
+      <input id="movie-genre" type="text" required>
+
+      <label for="release-year">Release Year</label>
+      <input id="release-year" type="number" min="1888" max="2100" required>
+
+      <label for="movie-rating">Rating (0 to 10)</label>
+      <input id="movie-rating" type="number" min="0" max="10" step="0.1" required>
+
+      <label for="movie-watched">Watch Status</label>
+      <select id="movie-watched">
+        <option value="false">Unwatched</option>
+        <option value="true">Watched</option>
+      </select>
+
+      <button type="submit" id="save-button">Add Movie</button>
+      <button type="button" id="cancel-button" hidden>Cancel Edit</button>
+    </form>
+
+    <section class="summary" aria-label="Watchlist summary">
+      <div>Total movies<strong id="total-count">0</strong></div>
+      <div>Watched<strong id="watched-count">0</strong></div>
+      <div>Unwatched<strong id="unwatched-count">0</strong></div>
+    </section>
+
+    <section id="movie-list-section">
+      <h2>My Movies</h2>
+      <div class="movie-tools">
+        <input id="movie-search" type="search" placeholder="Search by name or genre" aria-label="Search movies">
+        <select id="status-filter" aria-label="Filter by watch status">
+          <option value="all">All movies</option>
+          <option value="watched">Watched</option>
+          <option value="unwatched">Unwatched</option>
+        </select>
+      </div>
+      <div id="movie-list"></div>
+    </section>
+  </main>
+
+  <script>
+    
+    let movies = JSON.parse(sessionStorage.getItem("reel-notes-movies")) || [];
+    let editingMovieId = null;
+
+    const movieForm = document.getElementById("movie-form");
+    const movieList = document.getElementById("movie-list");
+
+    // Save the movie list in sessionStorage.
+    function saveMovies() {
+      sessionStorage.setItem("reel-notes-movies", JSON.stringify(movies));
+    }
+
+    // Display all movies on the page.
+    function showMovies() {
+      movieList.innerHTML = "";
+
+      const watchedCount = movies.filter(function (movie) {
+        return movie.watched;
+      }).length;
+
+      document.getElementById("total-count").textContent = movies.length;
+      document.getElementById("watched-count").textContent = watchedCount;
+      document.getElementById("unwatched-count").textContent = movies.length - watchedCount;
+
+      if (movies.length === 0) {
+        movieList.textContent = "No movies added yet.";
+        return;
+      }
+
+      const searchText = document.getElementById("movie-search").value.toLowerCase();
+      const selectedStatus = document.getElementById("status-filter").value;
+
+      const matchingMovies = movies.filter(function (movie) {
+        const matchesSearch =
+          movie.name.toLowerCase().includes(searchText) ||
+          movie.genre.toLowerCase().includes(searchText);
+
+        const matchesStatus =
+          selectedStatus === "all" ||
+          (selectedStatus === "watched" && movie.watched) ||
+          (selectedStatus === "unwatched" && !movie.watched);
+
+        return matchesSearch && matchesStatus;
+      });
+
+      if (matchingMovies.length === 0) {
+        movieList.textContent = "No movies match your search or filter.";
+        return;
+      }
+
+      matchingMovies.forEach(function (movie) {
+        const movieCard = document.createElement("section");
+        movieCard.className = "movie";
+
+        const title = document.createElement("h3");
+        title.textContent = movie.name;
+
+        const details = document.createElement("p");
+        details.textContent =
+          "Genre: " + movie.genre +
+          " | Year: " + movie.year +
+          " | Rating: " + movie.rating + "/10" +
+          " | Status: " + (movie.watched ? "Watched" : "Unwatched");
+
+        const buttons = document.createElement("div");
+        buttons.className = "movie-buttons";
+
+        const statusButton = document.createElement("button");
+        statusButton.textContent = movie.watched ? "Mark Unwatched" : "Mark Watched";
+        statusButton.addEventListener("click", function () {
+          movie.watched = !movie.watched;
+          saveMovies();
+          showMovies();
+        });
+
+        const editButton = document.createElement("button");
+        editButton.textContent = "Edit";
+        editButton.addEventListener("click", function () {
+          editMovie(movie.id);
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "delete-button";
+        deleteButton.addEventListener("click", function () {
+          deleteMovie(movie.id);
+        });
+
+        buttons.append(statusButton, editButton, deleteButton);
+        movieCard.append(title, details, buttons);
+        movieList.appendChild(movieCard);
+      });
+    }
+
+    // Add a movie or update the movie being edited.
+    movieForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const movie = {
+        name: document.getElementById("movie-name").value.trim(),
+        genre: document.getElementById("movie-genre").value.trim(),
+        year: Number(document.getElementById("release-year").value),
+        rating: Number(document.getElementById("movie-rating").value),
+        watched: document.getElementById("movie-watched").value === "true"
+      };
+
+      if (editingMovieId === null) {
+        movie.id = Date.now();
+        movies.push(movie);
+      } else {
+        movie.id = editingMovieId;
+        movies = movies.map(function (oldMovie) {
+          if (oldMovie.id === editingMovieId) {
+            return movie;
+          }
+          return oldMovie;
+        });
+      }
+
+      saveMovies();
+      showMovies();
+      resetForm();
+    });
+
+    // Fill in the form with a movie's details for editing.
+    function editMovie(id) {
+      const movie = movies.find(function (item) {
+        return item.id === id;
+      });
+
+      if (!movie) {
+        return;
+      }
+
+      editingMovieId = movie.id;
+      document.getElementById("movie-name").value = movie.name;
+      document.getElementById("movie-genre").value = movie.genre;
+      document.getElementById("release-year").value = movie.year;
+      document.getElementById("movie-rating").value = movie.rating;
+      document.getElementById("movie-watched").value = String(movie.watched);
+      document.getElementById("form-title").textContent = "Edit Movie";
+      document.getElementById("save-button").textContent = "Save Changes";
+      document.getElementById("cancel-button").hidden = false;
+    }
+
+    // Remove a movie from the list.
+    function deleteMovie(id) {
+      movies = movies.filter(function (movie) {
+        return movie.id !== id;
+      });
+
+      saveMovies();
+      showMovies();
+
+      if (editingMovieId === id) {
+        resetForm();
+      }
+    }
+
+    // Clear the form and return to add mode.
+    function resetForm() {
+      movieForm.reset();
+      editingMovieId = null;
+      document.getElementById("form-title").textContent = "Add a Movie";
+      document.getElementById("save-button").textContent = "Add Movie";
+      document.getElementById("cancel-button").hidden = true;
+    }
+
+    document.getElementById("cancel-button").addEventListener("click", resetForm);
+    document.getElementById("movie-search").addEventListener("input", showMovies);
+    document.getElementById("status-filter").addEventListener("change", showMovies);
+
+    // Show saved movies when the page opens.
+    showMovies();
+  </script>
+</body>
+</html>
